@@ -34,15 +34,12 @@ const char* zkclient::error_string(int32_t rc)
   return zerror(rc);
 }
 
-zoo_rc zkclient::create_persistent_node(const char* path, const std::string& value, const 
-std::vector<zoo_acl_t>& acl)
+zoo_rc zkclient::create_persistent_node(const char* path, const std::string& value, const std::vector<zoo_acl_t>& acl)
 {
   return m_connection->create_node(path, value, acl, 0, nullptr, 0);
 }
 
-zoo_rc zkclient::create_sequence_node(const char* path, const std::string& value, const 
-std::vector<zoo_acl_t>& acl,
-std::string& returned_path_name)
+zoo_rc zkclient::create_sequence_node(const char* path, const std::string& value, const std::vector<zoo_acl_t>& acl, std::string& returned_path_name)
 {
   char rpath[zoo_path_buf_len] = { 0 };
   zoo_rc rt = m_connection->create_node(path, value, acl, ZOO_SEQUENCE, rpath, (int32_t)sizeof(rpath));
@@ -50,19 +47,15 @@ std::string& returned_path_name)
   return rt;
 }
 
-zoo_rc zkclient::create_ephemeral_node(const char* path, const std::string& value, const 
-std::vector<zoo_acl_t>& acl)
+zoo_rc zkclient::create_ephemeral_node(const char* path, const std::string& value, const std::vector<zoo_acl_t>& acl)
 {
   return m_connection->create_node(path, value, acl, ZOO_EPHEMERAL, nullptr, 0);
 }
 
-zoo_rc zkclient::create_sequance_ephemeral_node(const char* path, const std::string& value, const 
-std::vector<zoo_acl_t>& acl,
-std::string& returned_path_name)
+zoo_rc zkclient::create_sequance_ephemeral_node(const char* path, const std::string& value, const std::vector<zoo_acl_t>& acl, std::string& returned_path_name)
 {
   char rpath[zoo_path_buf_len] = { 0 };
-  zoo_rc rt = m_connection->create_node(path, value, acl, ZOO_SEQUENCE | ZOO_EPHEMERAL, rpath, 
-  (int32_t)sizeof(rpath));
+  zoo_rc rt = m_connection->create_node(path, value, acl, ZOO_SEQUENCE | ZOO_EPHEMERAL, rpath, (int32_t)sizeof(rpath));
   returned_path_name = rpath;
   return rt;
 }
@@ -113,8 +106,7 @@ zoo_rc zkclient::get_node_value(const char* path, string& out_value, zoo_state_t
 
 zoo_rc zkclient::set_node_value(const char* path, const string& value, int32_t version)
 {
-  return (zoo_rc)zoo_set((zhandle_t*)m_connection->get_zhandle(), path, value.c_str(), (int)value.size(), 
-  version);
+  return (zoo_rc)zoo_set((zhandle_t*)m_connection->get_zhandle(), path, value.c_str(), (int)value.size(), version);
 }
 
 void zkclient::createEphemeral(const string &path)
