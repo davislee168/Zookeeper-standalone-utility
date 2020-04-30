@@ -19,7 +19,7 @@ zkclient::zkclient(const string &connectstring, long sessionTimeout, long connec
 zkclient::~zkclient()
 {
   if (m_currentState != zkconnect::NOTCONNECTED)
-  close();
+    close();
 
   delete m_connection;
 }
@@ -71,7 +71,7 @@ zoo_rc zkclient::exists_node(const char* path, bool watch)
 {
   zoo_rc rt = m_connection->exists_node(path, (int)watch);
 
-return rt;
+  return rt;
 }
 
 zoo_rc zkclient::delete_node(const char* path, int32_t version)
