@@ -1,34 +1,32 @@
-***************************************************
-?
-zkwatcher.cpp#include "zkwatcher.h"
-?
+#include "zkwatcher.h"
+
 zkwatcher::zkwatcher()
 {
-start();
+  start();
 }
-?
+
 zkwatcher::~zkwatcher()
 {
 }
-?
+
 void zkwatcher::run()
 {
-while (!isShutDown())
-{
-try {
-process();
-} catch (...) {
+  while (!isShutDown())
+  {
+    try {
+      process();
+    } catch (...) {
+    }
+  }
 }
-}
-}
-?
+
 bool zkwatcher::start()
 {
-?
+
 }
-?
+
 bool zkwatcher::isShutDown()
 {
-?
+
 }
 
