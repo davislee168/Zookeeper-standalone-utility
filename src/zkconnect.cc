@@ -192,7 +192,6 @@ string zkconnect::get_host_ip()
   ipBuffer = inet_ntoa(*((struct in_addr*) host_entry->h_addr_list[0]));
 
   // printf("Hostname: %s\n", hostbuffer);
-
   return (std::string(ipBuffer));
 }
 
@@ -205,9 +204,7 @@ void zkconnect::connect(zkwatcher *watcher)
   }
 
   // try to connect to ZooKeeper ensemble
-  // C-API zhandle_t *zookeeper_init(const char *host, watcher_fn watcher, int recv_timeout, const 
-  clientid_t *clientid,
-  // void *context, int flags);
+  // C-API zhandle_t *zookeeper_init(const char *host, watcher_fn watcher, int recv_timeout, const clientid_t *clientid, void *context, int flags);
   m_zk = zookeeper_init(m_servers.c_str(), globalWatcher, m_sessionTimeout, 0, (void*) this, 0);
   if (m_zk == NULL) {
     string err = "zookeeper_init";
@@ -253,13 +250,10 @@ zoo_rc zkconnect::create_node(const char* path, const string& value, const vecto
   acl_v.data = acl_list;
 
   /*
-  zoo_rc rt = (zoo_rc)zoo_create(m_zk, path, value.c_str(), (int)value.size(), &acl_v, create_flags,
-  path_buffer, (int)path_buffer_len);
+  zoo_rc rt = (zoo_rc)zoo_create(m_zk, path, value.c_str(), (int)value.size(), &acl_v, create_flags, path_buffer, (int)path_buffer_len);
   */
 
-  // C-API int zoo_create(zhandle_t *zh, const char *path, const char *value, int valuelen, const struct 
-  acl_vector *acl,
-  // int mode, char *path_buffer, int path_buffer_len);
+  // C-API int zoo_create(zhandle_t *zh, const char *path, const char *value, int valuelen, const struct acl_vector *acl, int mode, char *path_buffer, int path_buffer_len);
 
   zoo_rc rt; 
   if (value.empty())
@@ -273,9 +267,9 @@ zoo_rc zkconnect::create_node(const char* path, const string& value, const vecto
 
   /*
   if (rt != z_ok) {
-  string err = "zoo_create" + std::string(path);
-  printf("[%s.%d] rt=%d buffer = %s\n", __FUNCTION__, __LINE__, rt, path_buffer);
-  checkError(rt, err);
+    string err = "zoo_create" + std::string(path);
+    printf("[%s.%d] rt=%d buffer = %s\n", __FUNCTION__, __LINE__, rt, path_buffer);
+    checkError(rt, err);
   }
   */
 
@@ -291,9 +285,9 @@ zoo_rc zkconnect::delete_node(const char* path, int32_t version)
   zoo_rc rd = (zoo_rc)zoo_delete(m_zk, path, version); // -1 : not check version
   if (rd != z_ok)
   {
-  string err = "zoo_delete" + std::string(path);
-  printf("[%s.%d\n", __FUNCTION__, __LINE__);
-  checkError(rd, err);
+    string err = "zoo_delete" + std::string(path);
+    printf("[%s.%d\n", __FUNCTION__, __LINE__);
+    checkError(rd, err);
   }
 
   return rd;
@@ -312,14 +306,14 @@ zoo_rc zkconnect::exists_node(const char* path, bool watch)
   /*
   if (rt != z_ok)
   {
-  string err = "zoo_exists" + std::string(path);
-  printf("[%s.%d] [rt = %d err = %s]\n", __FUNCTION__, __LINE__, rt, err.c_str());
-  checkError(rt, err);
+    string err = "zoo_exists" + std::string(path);
+    printf("[%s.%d] [rt = %d err = %s]\n", __FUNCTION__, __LINE__, rt, err.c_str());
+    checkError(rt, err);
   }
   */
 
   // if (info) {
-  // state_to_zoo_state_t(s, info);
+  //  state_to_zoo_state_t(s, info);
   // }
 
   return rt;
@@ -332,9 +326,7 @@ string zkconnect::create(const string &path, const char data[], int mode)
   int rc = ZOK;
 
   std::cout << "path: " << path << " data: " << data << " mode: " << mode << std::endl;
-  // C-API int zoo_create(zhandle_t *zh, const char *path, const char *value, int valuelen, const struct 
-  acl_vector *acl,
-  // int mode, char *path_buffer, int path_buffer_len);
+  // C-API int zoo_create(zhandle_t *zh, const char *path, const char *value, int valuelen, const struct acl_vector *acl, int mode, char *path_buffer, int path_buffer_len);
   if (data == NULL)
     rc = zoo_create(m_zk, path.c_str(), NULL, 0, &ZOO_OPEN_ACL_UNSAFE, mode, buffer, sizeof(buffer)-1);
   else
@@ -344,9 +336,9 @@ string zkconnect::create(const string &path, const char data[], int mode)
 
   /*
   if (rc == ZNODEEXISTS) {
-  std::cout << "Nodes already exists: " << path << std::endl;
-  buf = path;
-  return buf;
+    std::cout << "Nodes already exists: " << path << std::endl;
+    buf = path;
+    return buf;
   }
   */
 
@@ -383,8 +375,7 @@ bool zkconnect::exists(const string &path, bool watch)
 
   if (watch)
   {
-    // C-API int zoo_wexists(zhandle_t *zh, const char *path, watcher_fn watcher, void* watcherCtx, Struct 
-    Stat *stat);
+    // C-API int zoo_wexists(zhandle_t *zh, const char *path, watcher_fn watcher, void* watcherCtx, Struct Stat *stat);
     ret = zoo_wexists(m_zk, path.c_str(), watch_exist, (void*) this, NULL);
     if (ret != ZOK)
     {
@@ -415,8 +406,7 @@ list<string> zkconnect::getChildren(const string &path, bool watch)
 
   if (watch)
   {
-    // C-API int zoo_wget_children(xhandle_t *zh, const char *path, watcher_fn watcher, void *watcherCtx,
-    // struct String_vector *strings);
+    // C-API int zoo_wget_children(xhandle_t *zh, const char *path, watcher_fn watcher, void *watcherCtx, struct String_vector *strings);
     ret = zoo_wget_children(m_zk, path.c_str(), watch_getChild, (void*) this, &str_vec);
     if (ret != ZOK)
     {
