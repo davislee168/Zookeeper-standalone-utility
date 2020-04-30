@@ -8,8 +8,7 @@ using namespace std;
 
 int main()
 {
-  // string hostname = "delfdta9awsc:2177";
-  string hostname = "113.140.207.132:2177,113.140.207.133:2177,113.140.207.134:2177";
+  string hostname = "127.0.0.1:2181,127.0.0.2:2181,127.0.0.3:2181";
   string lockpath = "/test1";
   string lockname = "dlock";
   long sessionTimeout = 10000;
