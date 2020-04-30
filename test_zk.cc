@@ -9,8 +9,7 @@ using namespace std;
 
 int main()
 {
-  // string hostname = "delfdta9awsc:2177";
-  string hostname = "113.140.207.132:2177,113.140.207.133:2177,113.140.207.134:2177";
+  string hostname = "127.0.0.1:2181,127.0.0.2:2181,127.0.0.3:2181";
   string path = "/test1";
   string epath = "/test1/dlock";
 
@@ -39,23 +38,20 @@ int main()
     } else {
       printf("Need to create node\n");
     }
-    printf("try check path[%s] exist[%d], ret[%d][%s]\n",
-    path.c_str(), ret == z_ok, ret, cli.error_string(ret));
+    printf("try check path[%s] exist[%d], ret[%d][%s]\n", path.c_str(), ret == z_ok, ret, cli.error_string(ret));
 
     rpath = epath;
 
     ret = cli.exists_node(epath.c_str(), true);
     if (ret == z_no_node) {
       ret = cli.create_ephemeral_node(epath.c_str(), value, acl);
-      printf("create ephemeral epath[%s] ret[%d][%s], rpath[%s]\n",
-      epath.c_str(), ret, cli.error_string(ret), rpath.c_str()); 
+      printf("create ephemeral epath[%s] ret[%d][%s], rpath[%s]\n", epath.c_str(), ret, cli.error_string(ret), rpath.c_str()); 
     } else {
       printf("exist ephemeral epath[%s] ret[%d][%s]\n", epath.c_str(), ret, cli.error_string(ret)); 
     }
 
     ret = cli.create_sequance_ephemeral_node(epath.c_str(), value, acl, rpath);
-    printf("create sequence ephemeral epath[%s] ret[%d][%s], rpath[%s]\n",
-    epath.c_str(), ret, cli.error_string(ret), rpath.c_str());
+    printf("create sequence ephemeral epath[%s] ret[%d][%s], rpath[%s]\n", epath.c_str(), ret, cli.error_string(ret), rpath.c_str());
 
     string nodes[10];
     for (int i = 0; i < 10; i++) {
