@@ -26,8 +26,7 @@ bool zkdlock::init()
 
   try {
     if (m_zkclient == NULL) {
-      m_zkclient = shared_ptr<zkclient>(new zkclient(m_zkhosts, M_SESSIONTIMEOUT, 
-      M_CONNECTIONTIMEOUT));
+      m_zkclient = shared_ptr<zkclient>(new zkclient(m_zkhosts, M_SESSIONTIMEOUT, M_CONNECTIONTIMEOUT));
       if (m_zkclient == NULL) {
         cout << "m_zkclient(new zkclient) err" << endl;
         return false;
@@ -36,8 +35,7 @@ bool zkdlock::init()
 
       // exist_node function returns 0 means node exists
       ret = m_zkclient->exists_node(m_servDlockPath.c_str(), true);
-      printf("Try check path[%s] exist[%d], ret[%d][%s]\n",
-      m_servDlockPath.c_str(), ret == z_ok, ret, m_zkclient->error_string(ret));
+      printf("Try check path[%s] exist[%d], ret[%d][%s]\n", m_servDlockPath.c_str(), ret == z_ok, ret, m_zkclient->error_string(ret));
       if (ret == z_ok) {
         printf("path[%s] already exists, no need to create\n", m_servDlockPath.c_str());
       } else {
@@ -293,8 +291,7 @@ bool zkdlock::dlock()
   // m_dLockZnodeName = m_zkclient->createEphemeralSequential(lockPath, NULL);
   acl.push_back(m_zkclient->create_world_acl(zoo_perm_all));
   ret = m_zkclient->create_sequance_ephemeral_node(lockPath.c_str(), value, acl, rpath);
-  printf("create sequence ephemeral epath[%s] ret[%d][%s], rpath[%s]\n",
-  lockPath.c_str(), ret, m_zkclient->error_string(ret), rpath.c_str());
+  printf("create sequence ephemeral epath[%s] ret[%d][%s], rpath[%s]\n", lockPath.c_str(), ret, m_zkclient->error_string(ret), rpath.c_str());
   m_dLockZnodeName = rpath;
 
   m_dLockList = m_zkclient->getChildren(m_dLockPath, false);
@@ -316,8 +313,7 @@ bool zkdlock::dlock()
     string value = std::to_string(getpid());
     string ipAndPort = m_zkclient->get_current_connected_ip_and_port();
     ret = m_zkclient->set_node_value(m_dLockZnodeName.c_str(), value+"|"+ipAndPort, -1);
-    // printf("try set path[%s]'s value to [%s] ret[%d][%s]\n",
-    // m_dLockZnodeName.c_str(), value.c_str(), ret, m_zkclient->error_string(ret));
+    // printf("try set path[%s]'s value to [%s] ret[%d][%s]\n", m_dLockZnodeName.c_str(), value.c_str(), ret, m_zkclient->error_string(ret));
     /*
     string pidPath = m_dLockPath + "/" + m_dLockName + std::to_string(getpid());
     ret = m_zkclient->create_ephemeral_node(pidPath.c_str(), value, acl);
@@ -369,8 +365,7 @@ bool zkdlock::dlock()
         string value = std::to_string(getpid());
         string ipAndPort = m_zkclient->get_current_connected_ip_and_port();
         ret = m_zkclient->set_node_value(m_dLockZnodeName.c_str(), value+"|"+ipAndPort, -1);
-        // printf("try set path[%s]'s value to [%s] ret[%d][%s]\n",
-        // m_dLockZnodeName.c_str(), value.c_str(), ret, m_zkclient->error_string(ret));
+        // printf("try set path[%s]'s value to [%s] ret[%d][%s]\n", m_dLockZnodeName.c_str(), value.c_str(), ret, m_zkclient->error_string(ret));
         return true;
       }
     }
