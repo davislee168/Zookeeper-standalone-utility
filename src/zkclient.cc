@@ -126,7 +126,7 @@ string zkclient::createEphemeralSequential(const string &path, const char data[]
 
 void zkclient::createPersistent(const string &path)
 {
-createPersistent(path, false);
+  createPersistent(path, false);
 }
 
 void zkclient::createPersistent(const string &path, bool createParents)
